@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "vite": "^5.2.7",
+    "vite-plugin-ruby": "^5.0.0"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vue": "3.2.33",
+    "vue-router": "^4.3.0"
+  }
+}
