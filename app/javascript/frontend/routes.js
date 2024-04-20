@@ -1,13 +1,21 @@
-import PageIndex from './views/pages/index.vue';
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
     path: '/',
     name: 'index',
-    components: {
-      default: PageIndex,
-    },
+    component: () => import('./views/pages/index.vue'),
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import('./views/pages/about.vue'),
   }
 ]
 
-export default routes;
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+})
+
+export default router;

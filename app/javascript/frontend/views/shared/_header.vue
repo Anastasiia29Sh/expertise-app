@@ -1,31 +1,39 @@
+<script setup>
+function login() {
+  alert("Войти");
+}
+
+function registr() {
+  alert("Зарегистрироваться");
+}
+</script>
+
 <template>
-  <div class="header">
-    <a class="logo" href="/">
+  <header class="header">
+    <router-link to="/" class="logo">
       <img src="../../assets/images/logo.png" alt="logo" />
       <p class="text-md">Экспертная оценка</p>
-    </a>
+    </router-link>
 
     <nav class="links-pages">
       <ol>
-        <li><a class="link" href="/">Главная</a></li>
-        <li><a class="link" href="/about">О нас</a></li>
+        <li><router-link to="/" class="link">Главная</router-link></li>
+        <li><router-link to="/about" class="link">О нас</router-link></li>
       </ol>
     </nav>
 
     <div class="group-button">
-      <div class="languages">
-        <a class="link" href="#">
-          <i class="fa fa-language" aria-hidden="true"></i>
-          <span>Ru|En</span>
-        </a>
-      </div>
+      <router-link class="languages link" to="#">
+        <i class="fa fa-language" aria-hidden="true"></i>
+        <span>Ru|En</span>
+      </router-link>
 
       <div class="auth">
-        <a class="link" href="/auth/login">Войти</a>
-        <a class="link" href="/auth/registr">Зарегистрироваться</a>
+        <button class="btn link" @click="login()">Войти</button>
+        <button class="btn link" @click="registr()">Зарегистрироваться</button>
       </div>
     </div>
-  </div>
+  </header>
 </template>
 
 <style scoped lang="sass">
@@ -38,7 +46,6 @@
 	align-items: center
 	padding: 5px 30px
 	background-color: var(--color-bg)
-
 
 .logo
 	max-width: 180px
@@ -70,7 +77,12 @@
 	flex-direction: row
 	gap: 40px
 
-.auth a
+.languages
+	display: flex
+	gap: 8px
+	align-items: center
+
+.auth button
 	padding: 10px
 	border-radius: 15px
 	border: 1px solid transparent
