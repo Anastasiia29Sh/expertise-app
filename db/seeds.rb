@@ -9,12 +9,14 @@
 #   end
 
 User.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('users')
 User.create([
 {name: "Анастасия", email: "nastya@yandex.ru", password: "aaa555*"},
 ])
 
 
 Image.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('images')
 Image.create([
 {name: 'Круассан', file: 'dessert_1_1.jpg', theme_id: 1},
 {name: 'Макарон', file: 'dessert_1_2.jpg', theme_id: 1},
@@ -38,3 +40,15 @@ Image.create([
 {name: 'Птичье молоко', file: 'dessert_5_3.jpg', theme_id: 5},
 {name: 'Ватрушка', file: 'dessert_5_4.jpg', theme_id: 5},
 ])
+
+
+Theme.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('themes')
+Theme.create([
+{name: "Какой десерт, по вашему мнению, наилучшим образом воплощает вкус и изысканность французской кухни?"},     
+{name: "Какой десерт лучше всего олицетворяет изысканность и традиции японской кулинарии?"},      
+{name: "Какой десерт наиболее показателен для американского образа жизни и культурных ценностей?"},   
+{name: "Какой десерт наилучшим образом представляет итальянскую кухню?"},      
+{name: "Какой десерт символизирует гостеприимство и теплоту русской кухни?"},    
+])
+
