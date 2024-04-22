@@ -8,6 +8,33 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+User.delete_all
 User.create([
 {name: "Анастасия", email: "nastya@yandex.ru", password: "aaa555*"},
+])
+
+
+Image.delete_all
+Image.create([
+{name: 'Круассан', file: 'dessert_1_1.jpg', theme_id: 1},
+{name: 'Макарон', file: 'dessert_1_2.jpg', theme_id: 1},
+{name: 'Профитроли', file: 'dessert_1_3.jpg', theme_id: 1},
+{name: 'Эклер', file: 'dessert_1_4.jpg', theme_id: 1},
+
+{name: 'Тайяки', file: 'dessert_2_1.jpg', theme_id: 2},
+{name: 'Моти', file: 'dessert_2_2.jpg', theme_id: 2},
+{name: 'Дораяки', file: 'dessert_2_3.jpg', theme_id: 2},
+
+{name: 'Кексы', file: 'dessert_3_1.jpg', theme_id: 3},
+{name: 'Брауни', file: 'dessert_3_2.jpg', theme_id: 3},
+{name: 'Чизкейк', file: 'dessert_3_3.jpg', theme_id: 3},
+
+{name: 'Тирамису', file: 'dessert_4_1.jpg', theme_id: 4},
+{name: 'Паннакотта', file: 'dessert_4_2.jpg', theme_id: 4},
+{name: 'Канноли', file: 'dessert_4_3.jpg', theme_id: 4},
+
+{name: 'Блины', file: 'dessert_5_1.jpg', theme_id: 5},
+{name: 'Медовик', file: 'dessert_5_2.jpg', theme_id: 5},
+{name: 'Птичье молоко', file: 'dessert_5_3.jpg', theme_id: 5},
+{name: 'Ватрушка', file: 'dessert_5_4.jpg', theme_id: 5},
 ])
