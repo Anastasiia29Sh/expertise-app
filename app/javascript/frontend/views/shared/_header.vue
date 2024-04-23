@@ -1,10 +1,33 @@
 <script setup>
-function login() {
-  alert("Войти");
+import { ref } from "vue";
+import { useUserStore } from "@/frontend/stores/userStore.js";
+
+import loginForm from "../components/loginForm.vue";
+
+const userStore = useUserStore();
+
+const openMenu = ref(false);
+
+const openLoginForm = ref(false);
+
+function login(data) {
+  userStore.loginUser(data).then((statusCode) => {
+    if (statusCode === 200) openLoginForm.value = false;
+  });
 }
 
 function registr() {
   alert("Зарегистрироваться");
+}
+
+function logout() {
+  openMenu.value = false;
+  userStore.logoutUser();
+}
+
+function closeModal() {
+  openLoginForm.value = false;
+  userStore.errorLogin = null;
 }
 </script>
 
@@ -28,12 +51,31 @@ function registr() {
         <span>Ru|En</span>
       </router-link>
 
-      <div class="auth">
-        <button class="btn link" @click="login()">Войти</button>
+      <div v-if="!userStore.isAuthenticated" class="auth">
+        <button class="btn link" @click="openLoginForm = true">Войти</button>
         <button class="btn link" @click="registr()">Зарегистрироваться</button>
+      </div>
+
+      <div v-else class="profile" @click="openMenu = !openMenu">
+        <img src="../../assets/images/user.png" alt="user" />
+        <span class="text-sm">{{ userStore.user.name }}</span>
+      </div>
+
+      <div v-if="openMenu" class="menu-profile">
+        <button class="btn link logout" @click="logout()">Выйти</button>
       </div>
     </div>
   </header>
+
+  <div v-if="openLoginForm" class="modal">
+    <i
+      class="fa fa-window-close close-btn"
+      aria-hidden="true"
+      @click="closeModal"
+    ></i>
+    <h3 class="title-modal">Авторизация</h3>
+    <loginForm @submit="login" />
+  </div>
 </template>
 
 <style scoped lang="sass">
@@ -97,4 +139,58 @@ function registr() {
 		background-color: var(--color-main)
 		&:hover
 			color: var(--color-bg)
+
+.profile
+	display: flex
+	align-items: center
+	gap: 5px
+
+	position: relative
+
+	font-weight: 700
+
+	cursor: pointer
+
+	&:hover
+		color: var(--color-main)
+
+	img
+		width: 35px
+		height: 35px
+
+.menu-profile
+	position: absolute
+	right: 30px
+	top: 65px
+
+	width: 80px
+	text-align: center
+	padding: 5px
+	background-color: var(--color-main)
+
+.logout
+	color: #ffffff
+
+.modal
+	max-width: 500px
+
+	position: fixed
+	margin: 0 auto
+	left: 0
+	right: 0
+	top: 25%
+
+	padding: 20px
+
+	color: #ffffff
+	background-color: var(--color-main)
+
+.close-btn
+	float: right
+	font-size: 20px
+	cursor: pointer
+
+.title-modal
+	margin-bottom: 30px
+	text-align: center
 </style>

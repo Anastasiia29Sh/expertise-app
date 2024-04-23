@@ -10,7 +10,7 @@
 
 User.delete_all
 ActiveRecord::Base.connection.reset_pk_sequence!('users')
-User.create([
+User.create!([
 {name: "Анастасия", email: "nastya@yandex.ru", password: "aaa555*"},
 ])
 
