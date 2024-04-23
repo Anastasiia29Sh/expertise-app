@@ -1,11 +1,12 @@
 {
   "devDependencies": {
-    "vite": "^5.2.7",
+    "vite": "^5.0.0",
     "vite-plugin-ruby": "^5.0.0"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
-    "vue": "3.2.33",
+    "pinia": "^2.1.7",
+    "vue": "3.4.21",
     "vue-router": "^4.3.0"
   }
 }

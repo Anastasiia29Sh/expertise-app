@@ -11,7 +11,7 @@ console.log('Vite ⚡️ Rails')
 // If you want to use .jsx or .tsx, add the extension:
 //     <%= vite_javascript_tag 'application.jsx' %>
 
-console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify.app/guide/rails')
+// console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify.app/guide/rails')
 
 // Example: Load Rails libraries in Vite.
 //
@@ -29,11 +29,13 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 
 import { createApp } from 'vue';
 import Router from '@/frontend/routes.js';
+import { createPinia } from 'pinia'
 import Layout from '@/frontend/views/shared/layout.vue';
 
 
 import '../frontend/assets/stylesheets/common.sass';
 
+const pinia = createPinia();
 const app = createApp(Layout);
 
-app.use(Router).mount('#app');  
+app.use(Router).use(pinia).mount('#app');  
