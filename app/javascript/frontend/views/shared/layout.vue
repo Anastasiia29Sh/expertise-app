@@ -1,6 +1,21 @@
 <script setup>
+import { onMounted } from "vue";
+
 import Header from "./_header.vue";
 import Footer from "./_footer.vue";
+
+import { useThemeStore } from "@/frontend/stores/themeStore.js";
+
+const themeStore = useThemeStore();
+
+themeStore.getThemes();
+themeStore.getImages();
+
+// console.log(imageStore.allImages);
+
+// onMounted(() => {
+//   imageStore.getImages();
+// });
 </script>
 
 <template>

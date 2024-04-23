@@ -4,6 +4,7 @@ class ThemesController < ApplicationController
   # GET /themes or /themes.json
   def index
     @themes = Theme.all
+    render json: @themes
   end
 
   # GET /themes/1 or /themes/1.json
