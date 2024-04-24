@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', () => {
 	const user = ref(null)
 
 	const errorLogin = ref(null)
+	const errorRegistr = ref(null)
 
 	async function loginUser(data) {
 		const res = await fetch("/auth/login", {
@@ -61,7 +62,27 @@ export const useUserStore = defineStore('user', () => {
 		user.value = null;
 		isAuthenticated.value = false;
 		errorLogin.value = null;
+		errorRegistr.value = null;
    }
 
-	return { isAuthenticated, user, errorLogin, loginUser, getCurrentUser, logoutUser }
+	async function registrUser(data) {
+		const res = await fetch("/users", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"X-CSRF-Token": csrfToken,
+			},
+			body: JSON.stringify({ user: data })
+		});
+
+		if (res.status === 422) {
+         // Пользователь с указанным email уже существует
+         const errorData = await res.json();
+         errorRegistr.value = errorData.errors[0];
+      }
+
+		return res.status;
+   }
+
+	return { isAuthenticated, user, errorLogin, errorRegistr, loginUser, getCurrentUser, logoutUser, registrUser }
 })

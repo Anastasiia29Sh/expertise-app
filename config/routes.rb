@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   post '/auth/login' => "auth#login"
   get '/auth/current' => "auth#current"
   get '/auth/logout' => "auth#logout"
-  post 'auth/registr' => "auth#registr"
+  # post 'auth/registr' => "auth#registr"
   get '/about' => "main#about"
 
   root 'main#index'

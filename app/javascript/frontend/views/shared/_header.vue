@@ -3,12 +3,16 @@ import { ref } from "vue";
 import { useUserStore } from "@/frontend/stores/userStore.js";
 
 import loginForm from "../components/loginForm.vue";
+import registrForm from "../components/registrForm.vue";
 
 const userStore = useUserStore();
 
 const openMenu = ref(false);
 
 const openLoginForm = ref(false);
+const openRegistrForm = ref(false);
+
+const registrationSuccess = ref(false);
 
 function login(data) {
   userStore.loginUser(data).then((statusCode) => {
@@ -16,8 +20,11 @@ function login(data) {
   });
 }
 
-function registr() {
-  alert("Зарегистрироваться");
+function registr(data) {
+  userStore.registrUser(data).then((statusCode) => {
+    if (statusCode === 200) registrationSuccess.value = true;
+    else registrationSuccess.value = false;
+  });
 }
 
 function logout() {
@@ -27,7 +34,9 @@ function logout() {
 
 function closeModal() {
   openLoginForm.value = false;
+  openRegistrForm.value = false;
   userStore.errorLogin = null;
+  userStore.errorRegistr = null;
 }
 </script>
 
@@ -53,7 +62,9 @@ function closeModal() {
 
       <div v-if="!userStore.isAuthenticated" class="auth">
         <button class="btn link" @click="openLoginForm = true">Войти</button>
-        <button class="btn link" @click="registr()">Зарегистрироваться</button>
+        <button class="btn link" @click="openRegistrForm = true">
+          Зарегистрироваться
+        </button>
       </div>
 
       <div v-else class="profile" @click="openMenu = !openMenu">
@@ -75,6 +86,20 @@ function closeModal() {
     ></i>
     <h3 class="title-modal">Авторизация</h3>
     <loginForm @submit="login" />
+  </div>
+
+  <div v-if="openRegistrForm" class="modal">
+    <i
+      class="fa fa-window-close close-btn"
+      aria-hidden="true"
+      @click="closeModal"
+    ></i>
+    <h3 class="title-modal">Регистрация</h3>
+    <registrForm v-if="!registrationSuccess" @submit="registr" />
+    <span v-else>
+      Пользователь успешно создан!
+      <br />Вы можете войти в свой аккаунт.
+    </span>
   </div>
 </template>
 
@@ -182,6 +207,7 @@ function closeModal() {
 
 	padding: 20px
 
+	text-align: center
 	color: #ffffff
 	background-color: var(--color-main)
 

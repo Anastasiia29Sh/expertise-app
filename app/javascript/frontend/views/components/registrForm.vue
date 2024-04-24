@@ -5,6 +5,7 @@ import { useUserStore } from "@/frontend/stores/userStore.js";
 
 const userStore = useUserStore();
 
+const name = ref("");
 const email = ref("");
 const password = ref("");
 
@@ -13,25 +14,40 @@ const emit = defineEmits(["submit"]);
 const flag = ref(false);
 
 const message = computed(() =>
-  (email.value === "" || password.value === "") && flag.value
+  (name.value === "" || email.value === "" || password.value === "") &&
+  flag.value
     ? "Пожалуйста, заполните все поля"
     : ""
 );
 
 function onSudmit() {
   flag.value = true;
-  if (email.value !== "" && password.value !== "")
-    emit("submit", { email: email.value, password: password.value });
+  if (name.value !== "" && email.value !== "" && password.value !== "")
+    emit("submit", {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+    });
 }
 </script>
 
 <template>
   <form class="form" method="post" @submit.prevent="onSudmit">
     <input
+      v-model="name"
+      type="text"
+      name="name"
+      placeholder="Имя"
+      maxlength="50"
+      class="input"
+    />
+
+    <input
       v-model="email"
       type="email"
       name="email"
       placeholder="Почта"
+      maxlength="50"
       class="input"
     />
 
@@ -40,12 +56,13 @@ function onSudmit() {
       type="password"
       name="password"
       placeholder="Пароль"
+      minlength="6"
       class="input"
     />
 
-    <input type="submit" value="Войти" class="input login-btn" />
+    <input type="submit" value="Зарегистрироваться" class="input login-btn" />
 
-    <span class="error">{{ message || userStore.errorLogin }}</span>
+    <span class="error">{{ message || userStore.errorRegistr }}</span>
   </form>
 </template>
 
