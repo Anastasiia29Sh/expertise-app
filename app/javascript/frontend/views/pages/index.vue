@@ -1,11 +1,15 @@
 <script setup>
 import { ref, computed, watch } from "vue";
+
 import { useThemeStore } from "@/frontend/stores/themeStore.js";
+import { useUserStore } from "@/frontend/stores/userStore.js";
+import { useMarkStore } from "@/frontend/stores/markStore.js";
 
 const themeStore = useThemeStore();
 
 const allThemes = computed(() => themeStore.allThemes);
-// const allImages = computed(() => themeStore.allImages);
+const userStore = useUserStore();
+const markStore = useMarkStore();
 
 const selectedTheme = ref(null);
 
@@ -14,20 +18,61 @@ const themeImages = computed(() =>
 );
 
 const currentIndexImage = ref(0);
-const mark = ref(5);
+
+const noEvaluate = ref(false);
 
 const nameTheme = ref();
 const srcImage = (img) => `/vite-dev/frontend/assets/images/pictures/${img}`;
+
+const initialMark = computed(() => getInitialMark());
+
+function getInitialMark() {
+  if (selectedTheme.value !== null && userStore.isAuthenticated) {
+    return markStore.getMarkUserImage(
+      themeImages.value[currentIndexImage.value].id
+    )?.value;
+  } else return 0;
+}
+
+const mark = ref(0);
 
 function changeStep(type) {
   if (type === "increase") currentIndexImage.value++;
   else currentIndexImage.value--;
 }
 
+function saveMark(idImage) {
+  if (userStore.isAuthenticated) {
+    // если ранее пользователь НЕ оставлял оценку, то ее надо добавить
+    if (initialMark.value === undefined) {
+      markStore.saveMark(idImage, mark.value).then(() => {
+        markStore.getMarks().then(() => getInitialMark());
+        mark.value = 0;
+      });
+    }
+    // если ранее пользователь УЖЕ оставлял оценку, то ее надо обновить
+    else {
+      const idMark = markStore.getMarkUserImage(
+        themeImages.value[currentIndexImage.value].id
+      ).id;
+      markStore.updateMark(idMark, idImage, mark.value).then(() => {
+        markStore.getMarks().then(() => getInitialMark());
+        mark.value = 0;
+      });
+    }
+
+    noEvaluate.value = false;
+  } else noEvaluate.value = true;
+}
+
 watch(selectedTheme, (newValue) => {
   currentIndexImage.value = 0;
   nameTheme.value = allThemes.value.find((f) => f.id === newValue).name;
-  mark.value = 5;
+  mark.value = 0;
+});
+
+watch(currentIndexImage, () => {
+  mark.value = 0;
 });
 </script>
 
@@ -79,6 +124,13 @@ watch(selectedTheme, (newValue) => {
         {{ themeImages[currentIndexImage].name }}
       </div>
 
+      <span
+        v-if="userStore.isAuthenticated && initialMark !== undefined"
+        class="initial-mark"
+      >
+        Ранее вы оценили на <b>{{ initialMark }}</b>
+      </span>
+
       <div class="range">
         <input type="range" v-model="mark" id="range1" min="0" max="100" />
       </div>
@@ -88,8 +140,17 @@ watch(selectedTheme, (newValue) => {
           Ваша оценка - <b>{{ mark }}</b>
         </span>
 
-        <button class="btn btn-save">Сохранить</button>
+        <button
+          class="btn btn-save"
+          @click="saveMark(themeImages[currentIndexImage].id)"
+        >
+          Сохранить
+        </button>
       </div>
+
+      <span v-if="noEvaluate && !userStore.isAuthenticated" class="notification"
+        >Сначала надо авторизоваться!</span
+      >
     </div>
 
     <div v-else class="right-part empty-theme">Тема не выбрана</div>
@@ -148,7 +209,7 @@ watch(selectedTheme, (newValue) => {
 
 .image
   width: 600px
-  height: 350px
+  height: 330px
   object-fit: cover
 
 .evaluate
@@ -158,6 +219,10 @@ watch(selectedTheme, (newValue) => {
   align-items: center
   margin-bottom: 15px
 
+.initial-mark
+  display: inline-block
+  width: 600px
+
 .btn-save
   padding: 7px
   border: 1px solid var(--color-main)
@@ -165,6 +230,15 @@ watch(selectedTheme, (newValue) => {
   &:hover
     color: #ffffff
     background-color: var(--color-main)
+
+.notification
+  display: inline-block
+  width: 600px
+  text-align: end
+  color: red
+
+  margin-top: -15px
+  margin-bottom: 15px
 
 // **********************************************
 #range1

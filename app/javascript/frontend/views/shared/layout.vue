@@ -4,12 +4,15 @@ import Footer from "./_footer.vue";
 
 import { useThemeStore } from "@/frontend/stores/themeStore.js";
 import { useUserStore } from "@/frontend/stores/userStore.js";
+import { useMarkStore } from "@/frontend/stores/markStore.js";
 
 const themeStore = useThemeStore();
 const userStore = useUserStore();
+const markStore = useMarkStore();
 
 themeStore.getThemes();
 themeStore.getImages();
+markStore.getMarks();
 
 userStore.getCurrentUser();
 </script>
