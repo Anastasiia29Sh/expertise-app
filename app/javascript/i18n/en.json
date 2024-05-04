@@ -31,5 +31,11 @@
 		"your_mark": "Your mark",
 		"initial_mark": "Previously you rated it",
 		"general_theme_results_btn": "Results"
+	},
+	"about": {
+		"title_page": "About Us",
+		"text_1": "We are a platform dedicated to those who appreciate desserts and want to share their opinions with others. Here everyone can give their expert rating to their favorite desserts and see how they are rated by other participants.",
+		"text_2": "Our mission is to make dessert judging as fun and easy as possible. We believe that every dessert deserves attention, and each deserves its own rating.",
+		"text_3": "Join us, rate desserts and share your impressions with other participants. We will be glad to see you on our platform!"
 	}
 }
