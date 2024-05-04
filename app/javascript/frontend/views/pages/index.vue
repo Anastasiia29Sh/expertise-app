@@ -5,6 +5,8 @@ import { useThemeStore } from "@/frontend/stores/themeStore.js";
 import { useUserStore } from "@/frontend/stores/userStore.js";
 import { useMarkStore } from "@/frontend/stores/markStore.js";
 
+import MyChart from "../components/MyChart.vue";
+
 const themeStore = useThemeStore();
 
 const allThemes = computed(() => themeStore.allThemes);
@@ -16,6 +18,9 @@ const selectedTheme = ref(null);
 const themeImages = computed(() =>
   themeStore.getThemeImages(+selectedTheme.value)
 );
+
+const imagesWithAvgMarks = computed(() => themeStore.imagesWithAvgMarks);
+const isOpenChart = ref(false);
 
 const currentIndexImage = ref(0);
 
@@ -58,6 +63,7 @@ function saveMark(idImage) {
       markStore.updateMark(idMark, idImage, mark.value).then(() => {
         markStore.getMarks().then(() => getInitialMark());
         mark.value = 0;
+        getChart();
       });
     }
 
@@ -65,10 +71,18 @@ function saveMark(idImage) {
   } else noEvaluate.value = true;
 }
 
+function getChart() {
+  isOpenChart.value = false;
+  themeStore.getImagesWithAvgMarks(+selectedTheme.value).then(() => {
+    isOpenChart.value = true;
+  });
+}
+
 watch(selectedTheme, (newValue) => {
   currentIndexImage.value = 0;
   nameTheme.value = allThemes.value.find((f) => f.id === newValue).name;
   mark.value = 0;
+  isOpenChart.value = false;
 });
 
 watch(currentIndexImage, () => {
@@ -92,6 +106,17 @@ watch(currentIndexImage, () => {
         >
           {{ theme.name }}
         </button>
+      </div>
+
+      <div v-if="selectedTheme !== null" class="result-chart">
+        <button v-if="!isOpenChart" @click="getChart" class="btn">
+          {{ $t("main.general_theme_results_btn") }}
+        </button>
+
+        <MyChart
+          v-if="isOpenChart && imagesWithAvgMarks !== undefined"
+          :data="imagesWithAvgMarks"
+        />
       </div>
     </div>
 
@@ -172,6 +197,20 @@ watch(currentIndexImage, () => {
 
 .left-part
   width: 500px
+
+.result-chart
+  margin-top: 20px
+
+  button
+    display: block
+    padding: 10px 20px
+    margin: 50px auto
+    border: 1px solid var(--color-main)
+    border-radius: 8px
+
+    &:hover
+      color: #ffffff
+      background-color: var(--color-main)
 
 .right-part
   display: flex

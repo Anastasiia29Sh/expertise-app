@@ -4,6 +4,7 @@ import { ref } from "vue"
 export const useThemeStore = defineStore('theme', () => {
 	const allThemes = ref();
 	const allImages = ref();
+	const imagesWithAvgMarks = ref();
 	
 
 	async function getThemes() {
@@ -28,9 +29,21 @@ export const useThemeStore = defineStore('theme', () => {
 		allImages.value = finalRes;
    }
 
+	async function getImagesWithAvgMarks(idTheme) {
+		const res = await fetch(`/themes/${idTheme}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			}
+		});
+
+		const finalRes = await res.json();
+		imagesWithAvgMarks.value = finalRes;
+   }
+
 	function getThemeImages(idTheme) {
 		return allImages.value.filter((f) => f.theme_id === idTheme)
 	}
 	
-	return { allThemes, allImages, getThemes, getImages, getThemeImages }
+	return { allThemes, allImages, imagesWithAvgMarks, getThemes, getImages, getThemeImages, getImagesWithAvgMarks }
 })

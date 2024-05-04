@@ -29,6 +29,7 @@
 		"notification": "Сначала надо авторизоваться!",
 		"save_mark_btn": "Сохранить",
 		"your_mark": "Ваша оценка",
-		"initial_mark": "Ранее вы оценили на"
+		"initial_mark": "Ранее вы оценили на",
+		"general_theme_results_btn": "Результаты"
 	}
 }

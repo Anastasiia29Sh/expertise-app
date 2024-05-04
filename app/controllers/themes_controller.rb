@@ -9,6 +9,16 @@ class ThemesController < ApplicationController
 
   # GET /themes/1 or /themes/1.json
   def show
+    theme_id = params[:id]
+    
+    @images_with_average_values = Image.where(theme_id: theme_id).map do |image|
+      values = Value.where(image_id: image.id).pluck(:value)
+      average_value = values.sum.to_f / values.size if values.any?
+      
+      { name: image.name, average_value: average_value }
+    end
+
+    render json: @images_with_average_values
   end
 
   # GET /themes/new

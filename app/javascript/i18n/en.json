@@ -29,6 +29,7 @@
 		"notification": "First you need to log in!",
 		"save_mark_btn": "Save",
 		"your_mark": "Your mark",
-		"initial_mark": "Previously you rated it"
+		"initial_mark": "Previously you rated it",
+		"general_theme_results_btn": "Results"
 	}
 }
