@@ -11,20 +11,14 @@ default: &default
 development:
  <<: *default
  database: expertise
- password: anasha
+ password: <%= Rails.application.credentials.database_password %>
 
 test:
  <<: *default
  database: expertise
- password: anasha
+ password: <%= Rails.application.credentials.database_password %>
 
 production:
  <<: *default
  database: expertise
- password: anasha
-
-
-production:
-  <<: *default
-  database: expertise
-  password: anasha
+ password: <%= Rails.application.credentials.database_password %>
