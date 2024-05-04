@@ -30,12 +30,30 @@ console.log('Vite ⚡️ Rails')
 import { createApp } from 'vue';
 import Router from '@/frontend/routes.js';
 import { createPinia } from 'pinia'
-import Layout from '@/frontend/views/shared/layout.vue';
+import { languages } from '../i18n';
+import { defaultLocale } from '../i18n';
+import { createI18n, useI18n } from 'vue-i18n';
 
+import Layout from '@/frontend/views/shared/layout.vue';
 
 import '../frontend/assets/stylesheets/common.sass';
 
 const pinia = createPinia();
-const app = createApp(Layout);
 
-app.use(Router).use(pinia).mount('#app');  
+const localStorageLang = localStorage.getItem('lang');
+const messages = Object.assign(languages);
+const i18n = createI18n({
+	legacy: false,
+	locale: localStorageLang || defaultLocale,
+	fallbackLocale: 'ru',
+	messages
+});
+
+const app = createApp(Layout, {
+	setup(){
+		const {t} = useI18n()
+		return {t}
+	}
+});
+
+app.use(i18n).use(Router).use(pinia).mount('#app');  

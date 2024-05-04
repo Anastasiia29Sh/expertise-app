@@ -1,8 +1,11 @@
 import {defineStore} from 'pinia'
 import { ref } from "vue"
+import { useI18n } from "vue-i18n";
 
 export const useUserStore = defineStore('user', () => {
 	const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+	const { locale } = useI18n({ useScope: "global" });
 
 	const isAuthenticated = ref(false)
 	const user = ref(null)
@@ -30,7 +33,7 @@ export const useUserStore = defineStore('user', () => {
 			errorLogin.value = null;
 		}
 		else {
-			errorLogin.value = finalRes.error
+			errorLogin.value = finalRes.error[locale.value]
 			user.value = null;
 			isAuthenticated.value = false;
 		}

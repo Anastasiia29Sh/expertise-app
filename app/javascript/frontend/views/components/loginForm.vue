@@ -1,7 +1,10 @@
 <script setup>
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { useUserStore } from "@/frontend/stores/userStore.js";
+
+const { t } = useI18n();
 
 const userStore = useUserStore();
 
@@ -14,7 +17,7 @@ const flag = ref(false);
 
 const message = computed(() =>
   (email.value === "" || password.value === "") && flag.value
-    ? "Пожалуйста, заполните все поля"
+    ? t("form.message")
     : ""
 );
 
@@ -31,7 +34,7 @@ function onSudmit() {
       v-model="email"
       type="email"
       name="email"
-      placeholder="Почта"
+      :placeholder="$t('form.email_placeholder')"
       class="input"
     />
 
@@ -39,11 +42,15 @@ function onSudmit() {
       v-model="password"
       type="password"
       name="password"
-      placeholder="Пароль"
+      :placeholder="$t('form.password_placeholder')"
       class="input"
     />
 
-    <input type="submit" value="Войти" class="input login-btn" />
+    <input
+      type="submit"
+      :value="$t('header.auth.login_btn')"
+      class="input login-btn"
+    />
 
     <span class="error">{{ message || userStore.errorLogin }}</span>
   </form>

@@ -1,0 +1,34 @@
+{
+	"header": {
+		"title_site": "Expert review",
+		"menu": {
+			"main_page": "Home",
+			"about_page": "About Us"
+		},
+		"auth": {
+			"login_btn": "Sign in",
+			"registr_btn": "Sign up",
+			"logout_btn": "Sign out"
+		}
+	},
+	"modal": {
+		"login_modal": "Authorization",
+		"registr_modal": "Registration",
+		"registration_success_1": "User was successfully created!",
+		"registration_success_2": "You can log into your account."
+	},
+	"form": {
+		"name_placeholder": "Name",
+		"email_placeholder": "Email",
+		"password_placeholder": "Password",
+		"message": "Please fill in all fields"
+	},
+	"main": {
+		"title_choice_theme": "Select a theme",
+		"empty_theme": "No topic selected",
+		"notification": "First you need to log in!",
+		"save_mark_btn": "Save",
+		"your_mark": "Your mark",
+		"initial_mark": "Previously you rated it"
+	}
+}

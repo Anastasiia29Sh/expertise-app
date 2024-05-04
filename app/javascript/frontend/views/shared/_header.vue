@@ -1,9 +1,18 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useUserStore } from "@/frontend/stores/userStore.js";
 
 import loginForm from "../components/loginForm.vue";
 import registrForm from "../components/registrForm.vue";
+
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const path = computed(() => route.name);
+
+const emit = defineEmits(["switchLang"]);
+
+defineProps(["lang"]);
 
 const userStore = useUserStore();
 
@@ -44,26 +53,48 @@ function closeModal() {
   <header class="header">
     <router-link to="/" class="logo">
       <img src="../../assets/images/logo.png" alt="logo" />
-      <p class="text-md">Экспертная оценка</p>
+      <p class="text-md">{{ $t("header.title_site") }}</p>
     </router-link>
 
     <nav class="links-pages">
       <ol>
-        <li><router-link to="/" class="link">Главная</router-link></li>
-        <li><router-link to="/about" class="link">О нас</router-link></li>
+        <li>
+          <router-link
+            to="/"
+            class="link"
+            :class="{ 'current-page': path === 'index' }"
+          >
+            {{ $t("header.menu.main_page") }}
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            to="/about"
+            class="link"
+            :class="{ 'current-page': path === 'about' }"
+          >
+            {{ $t("header.menu.about_page") }}
+          </router-link>
+        </li>
       </ol>
     </nav>
 
     <div class="group-button">
-      <router-link class="languages link" to="#">
+      <div class="languages link" @click="emit('switchLang')">
         <i class="fa fa-language" aria-hidden="true"></i>
-        <span>Ru|En</span>
-      </router-link>
+        <span>
+          <span :class="{ 'current-lang': lang === 'ru' }">Ru</span>
+          |
+          <span :class="{ 'current-lang': lang === 'en' }">En</span>
+        </span>
+      </div>
 
       <div v-if="!userStore.isAuthenticated" class="auth">
-        <button class="btn link" @click="openLoginForm = true">Войти</button>
+        <button class="btn link" @click="openLoginForm = true">
+          {{ $t("header.auth.login_btn") }}
+        </button>
         <button class="btn link" @click="openRegistrForm = true">
-          Зарегистрироваться
+          {{ $t("header.auth.registr_btn") }}
         </button>
       </div>
 
@@ -73,7 +104,9 @@ function closeModal() {
       </div>
 
       <div v-if="openMenu" class="menu-profile">
-        <button class="btn link logout" @click="logout()">Выйти</button>
+        <button class="btn link logout" @click="logout()">
+          {{ $t("header.auth.logout_btn") }}
+        </button>
       </div>
     </div>
   </header>
@@ -84,7 +117,7 @@ function closeModal() {
       aria-hidden="true"
       @click="closeModal"
     ></i>
-    <h3 class="title-modal">Авторизация</h3>
+    <h3 class="title-modal">{{ $t("modal.login_modal") }}</h3>
     <loginForm @submit="login" />
   </div>
 
@@ -94,17 +127,16 @@ function closeModal() {
       aria-hidden="true"
       @click="closeModal"
     ></i>
-    <h3 class="title-modal">Регистрация</h3>
+    <h3 class="title-modal">{{ $t("modal.registr_modal") }}</h3>
     <registrForm v-if="!registrationSuccess" @submit="registr" />
     <span v-else>
-      Пользователь успешно создан!
-      <br />Вы можете войти в свой аккаунт.
+      {{ $t("modal.registration_success_1") }}
+      <br />{{ $t("modal.registration_success_2") }}
     </span>
   </div>
 </template>
 
 <style scoped lang="sass">
-
 .header
 	height: 80px
 	display: flex
@@ -134,10 +166,11 @@ function closeModal() {
 	gap: 40px
 	list-style-type: none
 	padding-left: 0
-	a
-		color: #000000
-		&:hover
-			color: var(--color-main)
+	a:hover
+		color: var(--color-main)
+
+.current-page
+	color: var(--color-main)
 
 .group-button
 	display: flex
@@ -148,6 +181,11 @@ function closeModal() {
 	display: flex
 	gap: 8px
 	align-items: center
+	user-select: none
+
+.current-lang
+	text-decoration: underline
+	font-weight: 700
 
 .auth button
 	padding: 10px

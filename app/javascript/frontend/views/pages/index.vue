@@ -80,7 +80,9 @@ watch(currentIndexImage, () => {
   <div class="main-wrapper">
     <div class="left-part">
       <div class="list-themes">
-        <p><b>Выберите тему</b></p>
+        <p>
+          <b>{{ $t("main.title_choice_theme") }}</b>
+        </p>
         <button
           v-for="theme in allThemes"
           :key="theme.id"
@@ -128,7 +130,7 @@ watch(currentIndexImage, () => {
         v-if="userStore.isAuthenticated && initialMark !== undefined"
         class="initial-mark"
       >
-        Ранее вы оценили на <b>{{ initialMark }}</b>
+        {{ $t("main.initial_mark") }} <b>{{ initialMark }}</b>
       </span>
 
       <div class="range">
@@ -137,23 +139,28 @@ watch(currentIndexImage, () => {
 
       <div class="evaluate">
         <span>
-          Ваша оценка - <b>{{ mark }}</b>
+          {{ $t("main.your_mark") }} - <b>{{ mark }}</b>
         </span>
 
         <button
           class="btn btn-save"
           @click="saveMark(themeImages[currentIndexImage].id)"
         >
-          Сохранить
+          {{ $t("main.save_mark_btn") }}
         </button>
       </div>
 
-      <span v-if="noEvaluate && !userStore.isAuthenticated" class="notification"
-        >Сначала надо авторизоваться!</span
+      <span
+        v-if="noEvaluate && !userStore.isAuthenticated"
+        class="notification"
       >
+        {{ $t("main.notification") }}
+      </span>
     </div>
 
-    <div v-else class="right-part empty-theme">Тема не выбрана</div>
+    <div v-else class="right-part empty-theme">
+      {{ $t("main.empty_theme") }}
+    </div>
   </div>
 </template>
 

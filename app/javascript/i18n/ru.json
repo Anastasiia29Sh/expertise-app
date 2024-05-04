@@ -1,0 +1,34 @@
+{
+	"header": {
+		"title_site": "Экспертная оценка",
+		"menu": {
+			"main_page": "Главная",
+			"about_page": "О нас"
+		},
+		"auth": {
+			"login_btn": "Войти",
+			"registr_btn": "Зарегистрироваться",
+			"logout_btn": "Выйти"
+		}
+	},
+	"modal": {
+		"login_modal": "Авторизация",
+		"registr_modal": "Регистрация",
+		"registration_success_1": "Пользователь успешно создан!",
+		"registration_success_2": "Вы можете войти в свой аккаунт."
+	},
+	"form": {
+		"name_placeholder": "Имя",
+		"email_placeholder": "Почта",
+		"password_placeholder": "Пароль",
+		"message": "Пожалуйста, заполните все поля"
+	},
+	"main": {
+		"title_choice_theme": "Выберите тему",
+		"empty_theme": "Тема не выбрана",
+		"notification": "Сначала надо авторизоваться!",
+		"save_mark_btn": "Сохранить",
+		"your_mark": "Ваша оценка",
+		"initial_mark": "Ранее вы оценили на"
+	}
+}

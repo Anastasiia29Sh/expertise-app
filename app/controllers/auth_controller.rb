@@ -8,7 +8,7 @@ class AuthController < ApplicationController
         render json: { user: user }
       else
         # неудачная аутентификация
-        render json: { error: 'Неправильный email или пароль' }, status: :unauthorized
+        render json: { error: { 'ru': 'Неправильный email или пароль', 'en': 'Incorrect email or password' } }, status: :unauthorized
       end
     end
   end
